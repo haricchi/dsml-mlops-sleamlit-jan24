@@ -27,3 +27,34 @@ with col3:
 
 with col4:
     seats = st.selectbox("Seats", [2, 4, 5, 6, 7, 8, 9, 10])
+
+model = pickle.load(open("car_pred", "rb"))
+
+encode_dict={
+    "fuel_type": {"Diesel": 1, "Petrol": 2, "CNG": 3, "LPG": 4, "Electric": 5},
+     "transmission": {"Manual": 1, "Automatic": 2}
+
+     }
+
+def model_pred(fuel_type, transmission_type, engine_power, seats):
+    # create a dataframe
+    transmission_type = encode_dict["transmission"][transmission_type]
+    fuel_type = encode_dict["fuel_type"][fuel_type]
+
+
+    data = [[2018.0, 1, 40000, fuel_type, transmission_type, 18.0, engine_power, 85, seats]]
+
+    return round(model.predict(data)[0], 2)
+
+
+if st.button("Predict"):
+    st.write(model_pred(fuel_type, transmission_type, engine_power, seats))
+else:
+    st.write("Click on Predict, once you're done with the data")
+
+
+# after this code need to install streamlit, pandas other libraries 
+    
+    # create requirement file by running pip freeze > requirements.txt 
+
+    # run the code after selecting created venv ------streamlit run cars_24.py---entre 
